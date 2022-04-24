@@ -37,8 +37,6 @@ import kg.junesqo.weatherapp.databinding.FragmentWeatherBinding;
 
 public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
-    private Clouds clouds;
-    private Coord coord;
     private Main main;
     private Sys sys;
     private ArrayList<Weather> weatherList = new ArrayList<>();
@@ -92,8 +90,6 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                         binding.cardView.setVisibility(View.VISIBLE);
                         binding.progressBar.setVisibility(View.GONE);
                         binding.imageIv.setVisibility(View.VISIBLE);
-//                        adapter.setCharacters(resource.data.getResults());
-
 
                         wind = resource.data.getWind();
                         weather = resource.data;
@@ -114,7 +110,9 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @SuppressLint("SetTextI18n")
     private void setCurrentWeather() {
-        Log.e("status", weatherList.get(0).getIcon());
+
+        binding.locationTv.setText(cityName);
+        binding.dateTv.setText(getDate(System.currentTimeMillis()));
 
         //Setting weather status
         binding.weatherStatus.setText(weatherList.get(0).getMain());
@@ -123,22 +121,14 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                 .override(100, 100)
                 .into(binding.weatherStatusImg);
 
-
-        binding.locationTv.setText(cityName);
-        binding.dateTv.setText(getDate(System.currentTimeMillis()));
-
         //Setting temperature
         binding.tempTv.setText(Math.round(main.getTemp()-273.15) + "");
         binding.minTempTv.setText(Math.round(main.getTempMin()-273.15) + "°C");
         binding.maxTempTv.setText(Math.round(main.getTempMax()-273.15) + "°C");
 
-        //Setting humidity
+        //Setting extras
         binding.humidityTv.setText(main.getHumidity() + "%");
-
-        //Setting pressure
         binding.pressureTv.setText(main.getPressure() + "mBar");
-
-        //Setting wind
         binding.windTv.setText(wind.getSpeed() + "km/h");
 
         //Setting sunset and sunrise
@@ -152,7 +142,6 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @SuppressLint("SimpleDateFormat")
     private String getDate(Long date) {
-//        return new SimpleDateFormat("HH:mm, dd MMMM yyyy ").format(date);
         return new SimpleDateFormat("EEE, d MMMM yyyy | h:mm a").format(date);
     }
 
@@ -163,8 +152,6 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     private String getHours(int time){
 
         int hours = (int) TimeUnit.SECONDS.toHours(time);
-        Log.e("secs", String.valueOf(time));
-        Log.e("hours", String.valueOf(time));
         int minutes = (int) ((int) TimeUnit.SECONDS.toMinutes(time) -
                                 (TimeUnit.SECONDS.toHours(time)* 60));
 
