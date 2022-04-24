@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +99,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                         weather = resource.data;
                         main = resource.data.getMain();
                         sys = resource.data.getSys();
-//                        weatherList = (ArrayList<Weather>) resource.data.getWeather();
+                        weatherList = (ArrayList<Weather>) resource.data.getWeather();
                         binding.progressBar.setVisibility(View.GONE);
                         setCurrentWeather();
                         break;
@@ -112,11 +114,18 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @SuppressLint("SetTextI18n")
     private void setCurrentWeather() {
+        Log.e("status", weatherList.get(0).getIcon());
+
+        //Setting weather status
+        binding.weatherStatus.setText(weatherList.get(0).getMain());
+        Glide.with(requireContext())
+                .load("https://openweathermap.org/img/wn/" + weatherList.get(0).getIcon() + ".png")
+                .override(100, 100)
+                .into(binding.weatherStatusImg);
+
 
         binding.locationTv.setText(cityName);
         binding.dateTv.setText(getDate(System.currentTimeMillis()));
-
-        binding.weatherStatus.setText(String.valueOf(weather.getBase()));
 
         //Setting temperature
         binding.tempTv.setText(Math.round(main.getTemp()-273.15) + "");
