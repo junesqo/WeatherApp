@@ -5,19 +5,23 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import javax.inject.Inject;
+
 import kg.junesqo.weatherapp.common.Resource;
 import kg.junesqo.weatherapp.data.model.Weather;
 import kg.junesqo.weatherapp.data.model.WeatherApp;
 import kg.junesqo.weatherapp.data.remote.WeatherApi;
+import kg.junesqo.weatherapp.domain.repository.MainRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainRepository {
+public class MainRepositoryImpl implements MainRepository {
 
     private WeatherApi api;
 
-    public MainRepository(WeatherApi api) {
+    @Inject
+    public MainRepositoryImpl(WeatherApi api) {
         this.api = api;
     }
 

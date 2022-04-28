@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import kg.junesqo.weatherapp.R;
 import kg.junesqo.weatherapp.base.BaseFragment;
 import kg.junesqo.weatherapp.common.Resource;
@@ -34,8 +35,10 @@ import kg.junesqo.weatherapp.data.model.WeatherApp;
 import kg.junesqo.weatherapp.data.model.Wind;
 import kg.junesqo.weatherapp.databinding.FragmentWeatherBinding;
 
-
+@AndroidEntryPoint
 public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
+
+    private WeatherFragmentArgs args;
 
     private Main main;
     private Sys sys;
@@ -43,7 +46,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     private WeatherApp weather;
     private Wind wind;
 
-    private String cityName = "Bishkek";
+    private String cityName;
 
     private WeatherViewModel weatherViewModel;
 
@@ -52,6 +55,13 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         weatherViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+        cityName = "Bishkek";
+        try {
+            args = WeatherFragmentArgs.fromBundle(getArguments());
+        } catch (Exception e) {
+            Log.e("Error:", e.getLocalizedMessage());
+        }
+//        weatherViewModel.getWeatherByCityName(args.getCityName());
     }
 
     @Override
@@ -66,11 +76,28 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @Override
     protected void callRequests() {
+//        Log.e("args", args.getCityName());
+//
+//        if (args != null) {
+////            args = WeatherFragmentArgs.fromBundle(getArguments());
+//            Log.e("args", args.getCityName());
+//            cityName = args.getCityName();
+//        } else {
+//            Log.e("args", "args is empty");
+//            cityName = "Bishkek";
+//        }
+        cityName = "Bishkek";
         weatherViewModel.getWeatherByCityName(cityName);
     }
 
     @Override
     protected void setupListeners() {
+        binding.rectangle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_weatherFragment_to_weatherSearchFragment);
+            }
+        });
 
     }
 
