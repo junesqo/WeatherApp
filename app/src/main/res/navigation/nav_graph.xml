@@ -11,7 +11,7 @@
         android:label="fragment_weather"
         tools:layout="@layout/fragment_weather" >
         <argument android:name="cityName"
-            app:argType="java.lang.String"
+            app:argType="string"
             android:defaultValue="Bishkek"
             app:nullable="true"/>
         <action
@@ -22,11 +22,12 @@
         android:id="@+id/weatherSearchFragment"
         android:name="kg.junesqo.weatherapp.ui.weather_search.WeatherSearchFragment"
         android:label="WeatherSearchFragment">
-        <argument android:name="cityName"
-            app:argType="string"
-            app:nullable="false"/>
         <action
             android:id="@+id/action_weatherSearchFragment_to_weatherFragment"
-            app:destination="@id/weatherFragment" />
+            app:destination="@id/weatherFragment">
+            <argument android:name="cityName"
+                app:argType="string"
+                app:nullable="false"/>
+        </action>
     </fragment>
 </navigation>
