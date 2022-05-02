@@ -1,12 +1,20 @@
 package kg.junesqo.weatherapp.di;
 
+import android.content.Context;
+
+import androidx.room.Room;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import kg.junesqo.weatherapp.data.local.AppDatabase;
+import kg.junesqo.weatherapp.data.local.WeatherDao;
 import kg.junesqo.weatherapp.data.remote.WeatherApi;
 import kg.junesqo.weatherapp.data.repositories.MainRepositoryImpl;
 import kg.junesqo.weatherapp.domain.repository.MainRepository;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -38,7 +46,20 @@ public abstract class AppModule {
     }
 
     @Provides
-    public static MainRepository provideMainRepository(WeatherApi api){
-        return new MainRepositoryImpl(api);
+    public static MainRepository provideMainRepository(WeatherApi api, WeatherDao dao){
+        return new MainRepositoryImpl(api, dao);
+    }
+
+    @Provides
+    public static AppDatabase provideDatabase(@ApplicationContext Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, "database")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+    }
+
+    @Provides
+    public static WeatherDao provideDao(AppDatabase database){
+        return database.weatherDao();
     }
 }

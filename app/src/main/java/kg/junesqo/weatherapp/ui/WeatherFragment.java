@@ -22,10 +22,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import kg.junesqo.weatherapp.R;
 import kg.junesqo.weatherapp.base.BaseFragment;
 import kg.junesqo.weatherapp.common.Resource;
+import kg.junesqo.weatherapp.data.local.WeatherDao;
 import kg.junesqo.weatherapp.data.model.Clouds;
 import kg.junesqo.weatherapp.data.model.Coord;
 import kg.junesqo.weatherapp.data.model.Main;
@@ -49,6 +52,9 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     private String cityName;
 
     private WeatherViewModel weatherViewModel;
+
+    @Inject
+    WeatherDao dao;
 
 
     @Override
@@ -128,6 +134,17 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                     }
                     case ERROR: {
                         Toast.makeText(requireContext(), resource.msg, Toast.LENGTH_SHORT).show();
+                        wind = dao.getWeather().getWind();
+                        weather = dao.getWeather();
+                        main = dao.getWeather().getMain();
+                        sys = dao.getWeather().getSys();
+                        weatherList = (ArrayList<Weather>) dao.getWeather().getWeather();
+                        binding.progressBar.setVisibility(View.GONE);
+                        setCurrentWeather();
+                        binding.cardView.setVisibility(View.VISIBLE);
+                        binding.imageIv.setVisibility(View.VISIBLE);
+
+                        break;
                     }
                 }
             }

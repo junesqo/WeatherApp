@@ -2,13 +2,12 @@ package kg.junesqo.weatherapp.data.repositories;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import javax.inject.Inject;
 
 import kg.junesqo.weatherapp.common.Resource;
-import kg.junesqo.weatherapp.data.model.Weather;
+import kg.junesqo.weatherapp.data.local.WeatherDao;
 import kg.junesqo.weatherapp.data.model.WeatherApp;
 import kg.junesqo.weatherapp.data.remote.WeatherApi;
 import kg.junesqo.weatherapp.domain.repository.MainRepository;
@@ -19,10 +18,12 @@ import retrofit2.Response;
 public class MainRepositoryImpl implements MainRepository {
 
     private WeatherApi api;
+    private WeatherDao dao;
 
     @Inject
-    public MainRepositoryImpl(WeatherApi api) {
+    public MainRepositoryImpl(WeatherApi api, WeatherDao dao) {
         this.api = api;
+        this.dao = dao;
     }
 
     public MutableLiveData<Resource<WeatherApp>> getWeatherByCityName(String cityName) {
@@ -33,6 +34,7 @@ public class MainRepositoryImpl implements MainRepository {
             public void onResponse(Call<WeatherApp> call, Response<WeatherApp> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     liveData.setValue(Resource.success(response.body()));
+                    dao.insert(response.body());
                 } else {
                     liveData.setValue(Resource.error(response.message(), null));
                     Log.e("ERROR IS: ", response.message());

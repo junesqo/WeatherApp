@@ -1,44 +1,65 @@
 
 package kg.junesqo.weatherapp.data.model;
 
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import kg.junesqo.weatherapp.data.local.converters.CloudsConverter;
+import kg.junesqo.weatherapp.data.local.converters.CoordConverter;
+import kg.junesqo.weatherapp.data.local.converters.MainConverter;
+import kg.junesqo.weatherapp.data.local.converters.SysConverter;
+import kg.junesqo.weatherapp.data.local.converters.WeatherConverter;
+import kg.junesqo.weatherapp.data.local.converters.WindConverter;
+
+@Entity
 public class WeatherApp {
+
 
     @SerializedName("coord")
     @Expose
+    @TypeConverters({CoordConverter.class})
     private Coord coord;
     @SerializedName("weather")
     @Expose
+    @TypeConverters({WeatherConverter.class})
     private List<Weather> weather = null;
     @SerializedName("base")
     @Expose
     private String base;
     @SerializedName("main")
     @Expose
+    @TypeConverters({MainConverter.class})
     private Main main;
     @SerializedName("visibility")
     @Expose
     private Integer visibility;
     @SerializedName("wind")
     @Expose
+    @TypeConverters({WindConverter.class})
     private Wind wind;
     @SerializedName("clouds")
     @Expose
+    @TypeConverters({CloudsConverter.class})
     private Clouds clouds;
     @SerializedName("dt")
     @Expose
     private Integer dt;
     @SerializedName("sys")
     @Expose
+    @TypeConverters({SysConverter.class})
     private Sys sys;
     @SerializedName("timezone")
     @Expose
     private Integer timezone;
     @SerializedName("id")
     @Expose
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     @SerializedName("name")
     @Expose
@@ -46,6 +67,7 @@ public class WeatherApp {
     @SerializedName("cod")
     @Expose
     private Integer cod;
+
 
     public Coord getCoord() {
         return coord;
