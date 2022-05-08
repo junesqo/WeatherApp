@@ -7,11 +7,15 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import kg.junesqo.weatherapp.common.Resource;
+import kg.junesqo.weatherapp.data.local.WeatherDao;
 import kg.junesqo.weatherapp.data.model.WeatherApp;
 import kg.junesqo.weatherapp.data.repositories.MainRepositoryImpl;
 
 @HiltViewModel
 public class WeatherViewModel extends ViewModel {
+
+
+
 
     public LiveData<Resource<WeatherApp>> liveData;
     private MainRepositoryImpl repository;
@@ -23,6 +27,9 @@ public class WeatherViewModel extends ViewModel {
     public WeatherViewModel(MainRepositoryImpl repository) {
         this.repository = repository;
     }
+
+    @Inject
+    WeatherDao dao;
 
     public void getWeatherByCityName(String cityName) {
         liveData = repository.getWeatherByCityName(cityName);

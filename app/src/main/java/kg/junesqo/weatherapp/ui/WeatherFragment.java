@@ -2,6 +2,8 @@ package kg.junesqo.weatherapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -52,9 +54,6 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     private String cityName;
 
     private WeatherViewModel weatherViewModel;
-
-    @Inject
-    WeatherDao dao;
 
 
     @Override
@@ -134,11 +133,11 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                     }
                     case ERROR: {
                         Toast.makeText(requireContext(), resource.msg, Toast.LENGTH_SHORT).show();
-                        wind = dao.getWeather().getWind();
-                        weather = dao.getWeather();
-                        main = dao.getWeather().getMain();
-                        sys = dao.getWeather().getSys();
-                        weatherList = (ArrayList<Weather>) dao.getWeather().getWeather();
+                        wind = weatherViewModel.dao.getWeather().getWind();
+                        weather = weatherViewModel.dao.getWeather();
+                        main = weatherViewModel.dao.getWeather().getMain();
+                        sys = weatherViewModel.dao.getWeather().getSys();
+                        weatherList = (ArrayList<Weather>) weatherViewModel.dao.getWeather().getWeather();
                         binding.progressBar.setVisibility(View.GONE);
                         setCurrentWeather();
                         binding.cardView.setVisibility(View.VISIBLE);
@@ -165,9 +164,9 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                 .into(binding.weatherStatusImg);
 
         //Setting temperature
-        binding.tempTv.setText(Math.round(main.getTemp()-273.15) + "");
-        binding.minTempTv.setText(Math.round(main.getTempMin()-273.15) + "°C");
-        binding.maxTempTv.setText(Math.round(main.getTempMax()-273.15) + "°C");
+        binding.tempTv.setText(Math.round(main.getTemp() - 273.15) + "");
+        binding.minTempTv.setText(Math.round(main.getTempMin() - 273.15) + "°C");
+        binding.maxTempTv.setText(Math.round(main.getTempMax() - 273.15) + "°C");
 
         //Setting extras
         binding.humidityTv.setText(main.getHumidity() + "%");
@@ -179,7 +178,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
         binding.sunsetTv.setText(getTime(requireContext(), Long.valueOf(sys.getSunset())));
 
         //Setting daytime
-        int daytime = sys.getSunset()-sys.getSunrise();
+        int daytime = sys.getSunset() - sys.getSunrise();
         binding.daytimeTv.setText(getHours(daytime));
     }
 
@@ -192,11 +191,11 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
         return DateUtils.formatDateTime(context, time * 1000, DateUtils.FORMAT_SHOW_TIME);
     }
 
-    private String getHours(int time){
+    private String getHours(int time) {
 
         int hours = (int) TimeUnit.SECONDS.toHours(time);
         int minutes = (int) ((int) TimeUnit.SECONDS.toMinutes(time) -
-                                (TimeUnit.SECONDS.toHours(time)* 60));
+                (TimeUnit.SECONDS.toHours(time) * 60));
 
         return hours + "h " + minutes + "m";
     }
