@@ -31,8 +31,11 @@ public class WeatherViewModel extends ViewModel {
     @Inject
     WeatherDao dao;
 
-    public void getWeatherByCityName(String cityName) {
-        liveData = repository.getWeatherByCityName(cityName);
-    }
+//    public void getWeatherByCityName(String cityName) {
+//        liveData = repository.getWeatherByCityName(cityName);
+//    }
 
+    public void getWeatherByMap(String latitude, String longitude) {
+        liveData = repository.getWeatherByMap(latitude, longitude);
+    }
 }

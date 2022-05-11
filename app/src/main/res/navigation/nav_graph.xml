@@ -10,14 +10,28 @@
         android:name="kg.junesqo.weatherapp.ui.WeatherFragment"
         android:label="fragment_weather"
         tools:layout="@layout/fragment_weather" >
-        <argument android:name="cityName"
+
+        <argument
+            android:name="latitude"
+            android:defaultValue="42.882004"
             app:argType="string"
-            android:defaultValue="Bishkek"
-            app:nullable="true"/>
+            app:nullable="true" />
+
+        <argument
+            android:name="longitude"
+            app:argType="string"
+            android:defaultValue="74.582748"
+            app:nullable="true" />
+
+<!--        <argument android:name="cityName"-->
+<!--            app:argType="string"-->
+<!--            android:defaultValue="Bishkek"-->
+<!--            app:nullable="true"/>-->
         <action
             android:id="@+id/action_weatherFragment_to_weatherSearchFragment"
             app:destination="@id/weatherSearchFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/weatherSearchFragment"
         android:name="kg.junesqo.weatherapp.ui.weather_search.WeatherSearchFragment"
@@ -25,9 +39,19 @@
         <action
             android:id="@+id/action_weatherSearchFragment_to_weatherFragment"
             app:destination="@id/weatherFragment">
-            <argument android:name="cityName"
+            <argument
+                android:name="latitude"
                 app:argType="string"
-                app:nullable="false"/>
+                app:nullable="true" />
+
+            <argument
+                android:name="longitude"
+                app:argType="string"
+                app:nullable="true" />
+
+<!--            <argument android:name="cityName"-->
+<!--                app:argType="string"-->
+<!--                app:nullable="false"/>-->
         </action>
     </fragment>
 </navigation>

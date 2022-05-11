@@ -2,6 +2,7 @@ package kg.junesqo.weatherapp.data.repositories;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import javax.inject.Inject;
@@ -26,10 +27,36 @@ public class MainRepositoryImpl implements MainRepository {
         this.dao = dao;
     }
 
-    public MutableLiveData<Resource<WeatherApp>> getWeatherByCityName(String cityName) {
+//    public MutableLiveData<Resource<WeatherApp>> getWeatherByCityName(String cityName) {
+//        MutableLiveData<Resource<WeatherApp>> liveData = new MutableLiveData<>();
+//        liveData.setValue(Resource.loading());
+//        api.getTemp(cityName, "bf77ac8444ca487f6bad28e7bbf1abd7").enqueue(new Callback<WeatherApp>() {
+//            @Override
+//            public void onResponse(Call<WeatherApp> call, Response<WeatherApp> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    liveData.setValue(Resource.success(response.body()));
+//                    dao.insert(response.body());
+//                } else {
+//                    liveData.setValue(Resource.error(response.message(), null));
+//                    Log.e("ERROR IS: ", response.message());
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<WeatherApp> call, Throwable t) {
+//                liveData.setValue(Resource.error(t.getLocalizedMessage(), null));
+//                Log.e("ERROR IS: ", t.getLocalizedMessage());
+//            }
+//        });
+//
+//        return liveData;
+//    }
+
+    public MutableLiveData<Resource<WeatherApp>> getWeatherByMap(String latitude, String longitude) {
         MutableLiveData<Resource<WeatherApp>> liveData = new MutableLiveData<>();
         liveData.setValue(Resource.loading());
-        api.getTemp(cityName, "bf77ac8444ca487f6bad28e7bbf1abd7").enqueue(new Callback<WeatherApp>() {
+        api.getTemp(latitude, longitude, "bf77ac8444ca487f6bad28e7bbf1abd7").enqueue(new Callback<WeatherApp>() {
             @Override
             public void onResponse(Call<WeatherApp> call, Response<WeatherApp> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -51,5 +78,4 @@ public class MainRepositoryImpl implements MainRepository {
 
         return liveData;
     }
-
 }

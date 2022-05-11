@@ -9,7 +9,9 @@ public interface WeatherApi {
 
     @GET("data/2.5/weather")
     Call<WeatherApp> getTemp(
-            @Query("q") String city,
+            @Query("lat") String lat,
+            @Query("lon") String lon,
+//            @Query("q") String city,
             @Query("appid") String apiKey
             );
 }

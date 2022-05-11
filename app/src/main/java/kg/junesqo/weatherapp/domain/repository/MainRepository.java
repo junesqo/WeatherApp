@@ -7,5 +7,7 @@ import kg.junesqo.weatherapp.data.model.WeatherApp;
 
 public interface MainRepository {
 
-    MutableLiveData<Resource<WeatherApp>> getWeatherByCityName(String cityName);
+//    MutableLiveData<Resource<WeatherApp>> getWeatherByCityName(String cityName);
+
+    MutableLiveData<Resource<WeatherApp>> getWeatherByMap(String latitude, String longitude);
 }

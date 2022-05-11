@@ -60,13 +60,14 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         weatherViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
-        cityName = "Bishkek";
+//        cityName = "Bishkek";
         try {
             args = WeatherFragmentArgs.fromBundle(getArguments());
         } catch (Exception e) {
             Log.e("Error:", e.getLocalizedMessage());
         }
-        weatherViewModel.getWeatherByCityName(args.getCityName());
+//        weatherViewModel.getWeatherByCityName(args.getCityName());
+        weatherViewModel.getWeatherByMap(args.getLatitude(), args.getLongitude());
     }
 
     @Override
@@ -81,17 +82,18 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @Override
     protected void callRequests() {
-        Log.e("args", args.getCityName());
+//        Log.e("args", args.getCityName());
 
-        if (args != null) {
-//            args = WeatherFragmentArgs.fromBundle(getArguments());
-            Log.e("args", args.getCityName());
-            cityName = args.getCityName();
-        } else {
-            Log.e("args", "args is empty");
-            cityName = "Bishkek";
-        }
-        weatherViewModel.getWeatherByCityName(cityName);
+//        if (args != null) {
+////            args = WeatherFragmentArgs.fromBundle(getArguments());
+//            Log.e("args", args.getCityName());
+//            cityName = args.getCityName();
+//        } else {
+//            Log.e("args", "args is empty");
+//            cityName = "Bishkek";
+//        }
+//        weatherViewModel.getWeatherByCityName(cityName);
+//        weatherViewModel.getWeatherByMap(args.getLatitude(), args.getLongitude());
     }
 
     @Override
@@ -180,6 +182,10 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
         //Setting daytime
         int daytime = sys.getSunset() - sys.getSunrise();
         binding.daytimeTv.setText(getHours(daytime));
+
+        //Set city
+        cityName = sys.getCountry();
+//        cityName = weather.getName();
     }
 
     @SuppressLint("SimpleDateFormat")
